@@ -1,4 +1,13 @@
 import streamlit as st
+import pandas as pd
+
+# PAGE IMPORTS
+import exec_summary
+import descriptive
+import clustering
+import prediction
+import prescriptive
+import scorer
 
 # -----------------------------
 # PAGE CONFIG
@@ -6,104 +15,131 @@ import streamlit as st
 st.set_page_config(
     page_title="FurnitureIQ Analytics",
     page_icon="🛋️",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # -----------------------------
-# CUSTOM STYLING
+# PASTEL THEME
 # -----------------------------
 st.markdown("""
 <style>
-.main {
-    background-color: #f8fafc;
+
+.stApp {
+    background-color: #f8fbf8;
 }
 
-h1 {
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
+}
+
+/* Main headings */
+h1, h2, h3 {
     color: #1f2937;
 }
 
-.metric-card {
-    background-color: #ffffff;
-    padding: 20px;
+/* Metric cards */
+[data-testid="stMetric"] {
+    background-color: #eef7f0;
     border-radius: 12px;
+    padding: 15px;
     text-align: center;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
 }
+
+/* Buttons */
+.stButton>button {
+    background-color: #95d5b2;
+    color: black;
+    border-radius: 10px;
+    border: none;
+}
+
+/* Dataframes */
+[data-testid="stDataFrame"] {
+    border-radius: 12px;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# HEADER
+# LOAD DATA
 # -----------------------------
-st.title("🛋️ FurnitureIQ Analytics")
-st.subheader("MBA Data Analytics Project")
-
-st.markdown("---")
-
-# -----------------------------
-# PROJECT OVERVIEW
-# -----------------------------
-st.markdown("""
-## Welcome
-
-FurnitureIQ Analytics is a data-driven platform designed for a Direct-to-Consumer (D2C) Furniture Startup.
-
-The objective of this project is to use analytics to answer critical business questions:
-
-- Which furniture categories generate the highest revenue?
-- Which cities drive the most demand?
-- Which marketing channels convert best?
-- What causes returns and low satisfaction?
-- How does delivery impact repeat purchases?
-- Which customers are most valuable?
-
-""")
-
-st.markdown("---")
+try:
+    df = pd.read_csv("furniture_dataset.csv")
+except:
+    df = pd.DataFrame()
 
 # -----------------------------
-# KPI SECTION
+# SIDEBAR
 # -----------------------------
-col1, col2, col3, col4 = st.columns(4)
+try:
+    st.sidebar.image("logo.png", width=120)
+except:
+    pass
 
-with col1:
-    st.metric("Target Dataset", "2,000 Customers")
+st.sidebar.markdown("## 🛋️ FurnitureIQ")
+st.sidebar.caption("D2C Furniture Analytics Platform")
 
-with col2:
-    st.metric("Cities Covered", "8")
+st.sidebar.markdown("---")
 
-with col3:
-    st.metric("Product Categories", "5")
-
-with col4:
-    st.metric("Analytics Layers", "4")
-
-st.markdown("---")
-
-# -----------------------------
-# ANALYTICS ROADMAP
-# -----------------------------
-st.markdown("""
-## Analytics Framework
-
-### 📊 Descriptive Analytics
-Understand sales, customers, products, and channels.
-
-### 🔍 Diagnostic Analytics
-Identify causes of returns, low satisfaction, and churn.
-
-### 🤖 Predictive Analytics
-Predict purchase intent, repeat purchases, and customer value.
-
-### 🚀 Prescriptive Analytics
-Recommend actions for growth, marketing allocation, and expansion.
-""")
-
-st.markdown("---")
+page = st.sidebar.radio(
+    "Navigate",
+    [
+        "Executive Summary",
+        "Descriptive Analysis",
+        "Customer Segmentation",
+        "Prediction Models",
+        "Prescriptive Analysis",
+        "Customer Scorer"
+    ]
+)
 
 # -----------------------------
-# STATUS
+# HOME IF NO DATA
 # -----------------------------
-st.success("✅ Deployment Successful")
+if df.empty:
 
-st.info("Next step: Upload dataset and build analytics pages.")
+    st.title("🛋️ FurnitureIQ Analytics")
+
+    st.markdown("""
+    ## MBA Data Analytics Project
+
+    A complete analytics platform for a D2C Furniture Startup.
+
+    ### Features
+
+    - Executive Dashboard
+    - Descriptive Analytics
+    - Customer Segmentation
+    - Predictive Models
+    - Prescriptive Analytics
+    - Customer Scoring
+
+    Upload the dataset to begin analysis.
+    """)
+
+    st.stop()
+
+# -----------------------------
+# PAGE ROUTING
+# -----------------------------
+if page == "Executive Summary":
+    exec_summary.show(df)
+
+elif page == "Descriptive Analysis":
+    descriptive.show(df)
+
+elif page == "Customer Segmentation":
+    clustering.show(df)
+
+elif page == "Prediction Models":
+    prediction.show(df)
+
+elif page == "Prescriptive Analysis":
+    prescriptive.show(df)
+
+elif page == "Customer Scorer":
+    scorer.show(df)
