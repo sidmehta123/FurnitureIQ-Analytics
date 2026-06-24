@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-# PAGE IMPORTS
 import exec_summary
 import descriptive
 import clustering
@@ -9,21 +8,13 @@ import prediction
 import prescriptive
 import scorer
 
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
 st.set_page_config(
     page_title="FurnitureIQ Analytics",
     page_icon="🛋️",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
-# -----------------------------
-# SIDEBAR
-# -----------------------------
 st.sidebar.title("🛋️ FurnitureIQ")
-st.sidebar.caption("D2C Furniture Analytics Platform")
 
 page = st.sidebar.radio(
     "Navigate",
@@ -37,12 +28,8 @@ page = st.sidebar.radio(
     ]
 )
 
-# Empty dataframe for now
 df = pd.DataFrame()
 
-# -----------------------------
-# PAGE ROUTING
-# -----------------------------
 if page == "Executive Summary":
     exec_summary.show(df)
 
