@@ -1,12 +1,9 @@
 import streamlit as st
 
 def show(df):
-
     st.title("📊 Executive Summary")
 
-    st.markdown("""
-    Overview of the FurnitureIQ Analytics platform.
-    """)
+    st.markdown("### Business Overview")
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -20,20 +17,20 @@ def show(df):
         st.metric("Product Categories", "5")
 
     with col4:
-        st.metric("Analytics Layers", "4")
+        st.metric("Analytics Modules", "6")
 
     st.markdown("---")
 
     st.success("""
-    FurnitureIQ Analytics helps a D2C furniture startup understand:
-
-    • Customer behavior
-
-    • Product demand
-
-    • Marketing performance
-
-    • Revenue opportunities
-
-    • Future growth potential
+    FurnitureIQ Analytics helps identify:
+    
+    • Best-selling furniture categories
+    
+    • High-value customer segments
+    
+    • Most profitable cities
+    
+    • Top-performing acquisition channels
+    
+    • Customer retention opportunities
     """)
