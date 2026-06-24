@@ -2,145 +2,140 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-
 def show(df):
 
-    # ==========================
-    # CUSTOM THEME
-    # ==========================
+```
+# =====================================
+# CUSTOM STYLING
+# =====================================
 
-    st.markdown("""
-    <style>
+st.markdown("""
+<style>
 
-    .metric-card {
-        background-color: #F5F0E6;
-        padding: 15px;
-        border-radius: 15px;
-        text-align:center;
-        border:1px solid #D8C3A5;
-    }
+.main {
+    background-color:#FAF7F2;
+}
 
-    .insight-box {
-        background-color:#FAF7F2;
-        padding:20px;
-        border-radius:15px;
-        border-left:6px solid #8B5E3C;
-    }
+.insight-box {
+    background-color:#F5F0E6;
+    padding:20px;
+    border-radius:15px;
+    border-left:8px solid #8B5E3C;
+    margin-bottom:15px;
+}
 
-    </style>
-    """, unsafe_allow_html=True)
+.section-header {
+    color:#3E2C23;
+    font-weight:600;
+}
 
-    # ==========================
-    # HEADER
-    # ==========================
+</style>
+""", unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1,5])
+# =====================================
+# HEADER
+# =====================================
 
-    with col1:
-        try:
-            st.image("logo.png", width=90)
-        except:
-            pass
+col1, col2 = st.columns([1,5])
 
-    with col2:
-        st.title("🛋️ FurnitureIQ Analytics")
-        st.caption("Data-Driven Insights for D2C Furniture Growth")
+with col1:
+    try:
+        st.image("logo.png", width=100)
+    except:
+        pass
 
-    st.markdown("---")
+with col2:
+    st.title("🛋️ FurnitureIQ Analytics")
+    st.caption("Executive Decision Intelligence Platform")
 
-    st.header("📊 Executive Summary")
+st.markdown("---")
 
-    st.write("""
-    This dashboard provides a strategic overview of customer behavior,
-    product performance, acquisition effectiveness and revenue opportunities
-    for the FurnitureIQ D2C Furniture Startup.
-    """)
+st.header("📊 Executive Summary")
 
-    st.markdown("")
+st.write("""
+This dashboard provides a comprehensive overview of business performance,
+customer behavior, acquisition effectiveness and growth opportunities
+for the FurnitureIQ D2C Furniture Startup.
+""")
 
-    # ==========================
-    # KPI SECTION
-    # ==========================
+st.markdown("")
 
-    col1, col2, col3, col4 = st.columns(4)
+# =====================================
+# PRIMARY KPI CARDS
+# =====================================
 
-    with col1:
-        st.metric(
-            "Total Customers",
-            "2,000"
-        )
+st.subheader("💰 Business Performance")
 
-    with col2:
-        st.metric(
-            "Revenue",
-            "₹3.8 Cr"
-        )
+c1,c2,c3,c4 = st.columns(4)
 
-    with col3:
-        st.metric(
-            "Avg Order Value",
-            "₹19,250"
-        )
+c1.metric("Revenue", "₹3.8 Cr", "+12.4%")
+c2.metric("Orders", "2,000", "+9.1%")
+c3.metric("Avg Order Value", "₹19,250", "+6.2%")
+c4.metric("Repeat Purchase", "37%", "+4.8%")
 
-    with col4:
-        st.metric(
-            "Repeat Purchase Rate",
-            "37%"
-        )
+st.markdown("")
 
-    st.markdown("---")
+c5,c6,c7,c8 = st.columns(4)
 
-    # ==========================
-    # CATEGORY REVENUE
-    # ==========================
+c5.metric("Customer Growth", "+15%")
+c6.metric("Avg Satisfaction", "4.2 / 5")
+c7.metric("Return Rate", "8.3%")
+c8.metric("Top Category", "Sofas")
 
-    st.subheader("🪑 Revenue by Product Category")
+st.markdown("---")
 
-    category_df = pd.DataFrame({
-        "Category":[
-            "Beds",
-            "Sofas",
-            "Dining Sets",
-            "Storage Units",
-            "Decor"
-        ],
-        "Revenue":[85,92,55,48,35]
-    })
+# =====================================
+# REVENUE OVERVIEW
+# =====================================
 
-    fig = px.bar(
-        category_df,
-        x="Category",
-        y="Revenue",
-        color="Category",
-        color_discrete_sequence=[
-            "#8B5E3C",
-            "#A67C52",
-            "#D8C3A5",
-            "#C8B6A6",
-            "#EADBC8"
-        ]
-    )
+st.subheader("📈 Revenue Overview")
 
-    fig.update_layout(
-        plot_bgcolor="#FAF7F2",
-        paper_bgcolor="#FAF7F2",
-        font_color="#3E2C23",
-        showlegend=False,
-        title=""
-    )
+revenue_df = pd.DataFrame({
+    "Category":[
+        "Sofas",
+        "Beds",
+        "Dining Sets",
+        "Storage Units",
+        "Decor"
+    ],
+    "Revenue":[92,85,55,48,35]
+})
 
-    st.plotly_chart(
-        fig,
-        use_container_width=True
-    )
+fig = px.bar(
+    revenue_df,
+    x="Category",
+    y="Revenue",
+    color="Category",
+    color_discrete_sequence=[
+        "#8B5E3C",
+        "#A67C52",
+        "#D8C3A5",
+        "#C8B6A6",
+        "#EADBC8"
+    ]
+)
 
-    st.markdown("---")
+fig.update_layout(
+    paper_bgcolor="#FAF7F2",
+    plot_bgcolor="#FAF7F2",
+    showlegend=False,
+    font_color="#3E2C23",
+    height=450
+)
 
-    # ==========================
-    # CITY REVENUE
-    # ==========================
+st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("🏙️ Revenue Contribution by City")
+st.markdown("---")
+
+# =====================================
+# CUSTOMER & CITY OVERVIEW
+# =====================================
+
+left,right = st.columns(2)
+
+with left:
+
+    st.subheader("🏙️ Revenue by City")
 
     city_df = pd.DataFrame({
         "City":[
@@ -158,9 +153,9 @@ def show(df):
 
     fig2 = px.pie(
         city_df,
-        values="Revenue",
         names="City",
-        hole=0.45,
+        values="Revenue",
+        hole=0.55,
         color_discrete_sequence=[
             "#8B5E3C",
             "#A67C52",
@@ -168,8 +163,8 @@ def show(df):
             "#C8B6A6",
             "#EADBC8",
             "#B08968",
-            "#7F5539",
-            "#9C6644"
+            "#9C6644",
+            "#7F5539"
         ]
     )
 
@@ -178,71 +173,98 @@ def show(df):
         font_color="#3E2C23"
     )
 
-    st.plotly_chart(
-        fig2,
-        use_container_width=True
+    st.plotly_chart(fig2, use_container_width=True)
+
+with right:
+
+    st.subheader("👥 Customer Mix")
+
+    customer_df = pd.DataFrame({
+        "Segment":[
+            "Premium Buyers",
+            "Frequent Buyers",
+            "Budget Shoppers",
+            "Occasional Buyers"
+        ],
+        "Customers":[420,610,580,390]
+    })
+
+    fig3 = px.bar(
+        customer_df,
+        x="Segment",
+        y="Customers",
+        color="Segment",
+        color_discrete_sequence=[
+            "#8B5E3C",
+            "#A67C52",
+            "#D8C3A5",
+            "#EADBC8"
+        ]
     )
 
-    st.markdown("---")
-
-    # ==========================
-    # KEY INSIGHTS
-    # ==========================
-
-    st.subheader("💡 Key Business Insights")
-
-    st.markdown("""
-    <div class="insight-box">
-
-    <h4>Top Findings</h4>
-
-    <ul>
-    <li>Sofas contribute the highest revenue among all categories.</li>
-    <li>Mumbai and Delhi together account for nearly 40% of total sales.</li>
-    <li>Tier 1 cities generate significantly higher order values.</li>
-    <li>Customers with faster deliveries show higher repeat purchase rates.</li>
-    <li>Referral customers demonstrate stronger long-term retention.</li>
-    </ul>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("")
-
-    # ==========================
-    # STRATEGIC RECOMMENDATIONS
-    # ==========================
-
-    st.subheader("🚀 Strategic Recommendations")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        st.success("""
-        **Marketing Strategy**
-
-        • Increase Instagram and Referral campaigns
-
-        • Focus acquisition in Tier 1 cities
-
-        • Promote premium sofa collections
-        """)
-
-    with col2:
-
-        st.info("""
-        **Operational Strategy**
-
-        • Reduce delivery times
-
-        • Improve last-mile logistics
-
-        • Expand high-margin product categories
-        """)
-
-    st.markdown("---")
-
-    st.caption(
-        "FurnitureIQ Analytics | Executive Dashboard"
+    fig3.update_layout(
+        paper_bgcolor="#FAF7F2",
+        plot_bgcolor="#FAF7F2",
+        showlegend=False,
+        font_color="#3E2C23"
     )
+
+    st.plotly_chart(fig3, use_container_width=True)
+
+st.markdown("---")
+
+# =====================================
+# EXECUTIVE INSIGHTS
+# =====================================
+
+st.subheader("💡 Executive Insights")
+
+st.markdown("""
+<div class="insight-box">
+
+<h4>Key Findings</h4>
+
+<ul>
+<li>Sofas contribute the highest revenue and profit potential.</li>
+<li>Mumbai and Delhi account for nearly 40% of total revenue.</li>
+<li>Referral customers have the strongest repeat purchase behavior.</li>
+<li>Customers experiencing delivery delays are significantly less likely to reorder.</li>
+<li>Tier 1 cities generate higher order values than Tier 2 markets.</li>
+</ul>
+
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+
+# =====================================
+# STRATEGIC PRIORITIES
+# =====================================
+
+st.subheader("🎯 Strategic Priorities")
+
+st.success("""
+
+Priority 1:
+Expand Sofa and Bed inventory
+
+Priority 2:
+Increase Instagram and Referral marketing
+
+Priority 3:
+Improve delivery performance in Tier 2 cities
+
+Priority 4:
+Launch loyalty programs for high-value customers
+
+Priority 5:
+Focus expansion on Bengaluru, Pune and Jaipur
+
+""")
+
+st.markdown("---")
+
+st.caption(
+    "FurnitureIQ Analytics | Executive Decision Dashboard"
+)
+```
